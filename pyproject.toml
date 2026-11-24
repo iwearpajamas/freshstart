@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "freshstart"
+version = "0.1.0"
+description = "Check that a project installs and sets up cleanly in a fresh, disposable Docker environment (Fresh Clone Setup Tester)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Freshstart contributors" }]
+keywords = ["freshstart", "developer-tools", "docker", "setup-testing", "cli"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "typer>=0.12.3",
+    "pyyaml>=6.0.1",
+    "pydantic>=2.6",
+]
+
+[project.scripts]
+freshstart = "freshstart.cli:app"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "ruff>=0.4.0", "mypy>=1.10.0", "types-PyYAML>=6.0"]
+
+[tool.setuptools.packages.find]
+include = ["freshstart*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

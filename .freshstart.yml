@@ -1,0 +1,27 @@
+version: 1
+
+project:
+  name: freshstart
+
+environment:
+  image: python:3.12-slim
+  workdir: /workspace
+  allow_network: true
+
+steps:
+  - name: Install dependencies
+    run:
+      - python
+      - -m
+      - pip
+      - install
+      - -e
+      - ".[dev]"
+    timeout_seconds: 600
+
+  - name: Run tests
+    run:
+      - python
+      - -m
+      - pytest
+    timeout_seconds: 600

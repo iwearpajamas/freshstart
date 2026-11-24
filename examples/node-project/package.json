@@ -1,0 +1,10 @@
+{
+  "name": "node-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example Node.js project for the Freshstart quick start.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  }
+}

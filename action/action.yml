@@ -1,0 +1,48 @@
+name: 'Freshstart Setup Test'
+description: >-
+  Check that a project installs and sets up cleanly in a fresh, disposable
+  Docker environment. Produces freshstart-report.md and freshstart-report.json.
+
+inputs:
+  project-dir:
+    description: 'Project directory to test (relative to the workspace root).'
+    required: false
+    default: '.'
+  config-path:
+    description: 'Path to the .freshstart.yml configuration file, relative to the project directory.'
+    required: false
+    default: '.freshstart.yml'
+  allow-network:
+    description: 'Allow network access inside the container (needed for installing dependencies).'
+    required: false
+    default: 'false'
+  report-dir:
+    description: 'Directory where freshstart-report.md and freshstart-report.json are written.'
+    required: false
+    default: 'freshstart-reports'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install Freshstart
+      run: python -m pip install freshstart
+
+    - name: Run Freshstart
+      run: |
+        freshstart test "${{ inputs.project-dir }}" \
+          --config "${{ inputs.config-path }}" \
+          --report-dir "${{ inputs.report-dir }}" \
+          ${{ inputs.allow-network == 'true' && '--allow-network' || '' }}
+
+    - name: Upload reports (optional)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: freshstart-reports
+        path: ${{ inputs.report-dir }}
+        if-no-files-found: ignore

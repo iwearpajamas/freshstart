@@ -1,0 +1,22 @@
+version: 1
+
+project:
+  name: node-project
+
+environment:
+  image: node:22-slim
+  workdir: /workspace
+  allow_network: true
+
+steps:
+  - name: Install dependencies
+    run:
+      - npm
+      - install
+    timeout_seconds: 300
+
+  - name: Run check
+    run:
+      - node
+      - index.js
+    timeout_seconds: 60
